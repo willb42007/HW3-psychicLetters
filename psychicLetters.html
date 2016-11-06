@@ -1,0 +1,111 @@
+<!--
+(0)   Assume counter is for the user, not the computer
+(1)   Get user input for letter submission
+(1.5) Restrict user submission to just letters
+(2)	  Count and increment wins
+(3)   Count and increment loses
+(4)   Display letters guessed
+(4.5) Prevent already used letters from being guessed again
+(5)   Count and decrement letter guesses remaining
+(6)   Computer randomly generate letter for user to guess
+(7)   Computer reset target letter generated after guesses are exhausted or guess is correct
+(8)   [D]  Provide game title, instructions and display page to user
+-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>pyschicLetters2</title>
+</head>
+<body>
+	<div id="game">
+		<h3>The Psychic Letter Game!</h3>
+		<br><br>
+		You have ten (10) chances to correctly guess what letter the computer is thinking! Type any letter now.
+		<br><br>
+		Wins: <span id=wins></span>
+		<br><br>
+		Loses: <span id=loses></span>
+		<br><br>
+		Number of guesses remaining: <span id=remaining></span>
+		<br><br>
+		Letters guessed so far: <span id=quesses></span>
+	</div>
+
+	<script type= "text/javascript">
+		debugger;
+		window.pyschicLetters = new game$();
+		function game$()
+		{
+			window.onkeydown=game$onKeyDown.bind(this);
+			this.validCharacters="abcdefghijklmnopqrstuvwxyz";
+			this.refresh=game$refresh;
+			this.clear=game$clear;
+
+			this.lettersGuessed = '';
+			this.guessCount=0;
+			this.guessesRemaining=10;
+			this.wins=0;
+			this.loses=0;
+			this.answer = '';
+
+			this.winner = game$winner;
+			this.loser = game$loser;
+
+			this.clear();
+		}
+
+		function game$onKeyDown(event)
+		{
+			var c;
+
+			c=String.fromCharCode(event.keyCode).toLowerCase();
+			if(this.validCharacters.indexOf(c) < 0) return;
+			if (c == this.answer) return this.winner();
+			this.loser();
+		}
+		
+		function game$loser()
+		{
+			this.guessCount += 1;
+			this.guessesRemaining -= 1;
+			if (this.guessesRemaining == 0)
+			{
+				this.loses += 1;
+				this.clear();
+			}
+			this.refresh();
+		}
+
+		function game$winner()
+		{
+			this.wins +=1;
+			this.clear();
+			this.refresh();
+		}
+
+		function game$refresh()
+		{
+			loses.innerText = this.loses;
+			wins.innerText = this.wins;
+			quesses.innerText = this.guesses;
+			remaining.innerText = this.guessesRemaining;
+			return;
+		}
+
+		function game$clear()
+		{
+			var n;
+			n = 97 + Math.round(Math.random() * 25);
+			this.answer=String.fromCharCode(n);
+			this.usedLetters="";
+		}
+		
+		/*i = Math.round(round()*)
+		correctAnswer = validCharacters.substring(i,1);*/
+
+	</script>
+</body>
+</html>
+
